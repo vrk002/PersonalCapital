@@ -1,7 +1,8 @@
 package com.personalcapital.budgetplan.rest;
 
 import com.personalcapital.budgetplan.model.PlanDocument;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -19,9 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 
-@Log4j2
 @Service
 public class PlanService {
+
+    final static Logger logger = LogManager.getLogger(PlanService.class);
 
     private RestHighLevelClient client;
     private ObjectMapper objectMapper;
@@ -37,15 +39,24 @@ public class PlanService {
         UUID uuid = UUID.randomUUID();
         document.setId(uuid.toString());
 
-        Map<String, Object> documentMapper = objectMapper.convertValue(document, Map.class);
+        String result = null;
 
-        IndexRequest indexRequest = new IndexRequest("stateplans", "plan", document.getId())
-                .source(documentMapper);
+        try {
+            Map<String, Object> documentMapper = objectMapper.convertValue(document, Map.class);
 
-        IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
-        return indexResponse
-                .getResult()
-                .name();
+            IndexRequest indexRequest = new IndexRequest("stateplans", "plan", document.getId())
+                    .source(documentMapper);
+
+            IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
+            result = indexResponse.getResult().name();
+
+        } catch ( Exception e) {
+//            logger.error("couldn't index the Plan document " + document.toString());
+            logger.error("Exception occurred while indexing the document with ack id: " + document.getAck_id() + ", Exception: " + e.toString());
+        }
+
+//        logger.info("succesfully indexed the document with ack id " + document.getAck_id() + " \n name: " + document.getPlan_name());
+        return result;
     }
 
     private List<PlanDocument> getSearchResult(SearchResponse response) {

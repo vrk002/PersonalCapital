@@ -2,6 +2,8 @@ HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+f_5500_2017_latest.csv
+
 ### STS ###
 .apt_generated
 .classpath
