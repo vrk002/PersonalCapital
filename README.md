@@ -2,6 +2,12 @@
 
 This application serves as the solution for Personal Capital AWS Challenge. Below are the complete details about the source code and REST API Calls.
 
+# AWS Information
+Host: http://ec2-3-17-16-176.us-east-2.compute.amazonaws.com
+S3 ARN: arn:aws:s3:::personalcapitalsourcefiles
+elasticsearch host: https://search-explorepersonalcapital-wmk2a5l5bpjpm4oersw4r2aun4.us-east-2.es.amazonaws.com
+Kibana: https://search-explorepersonalcapital-wmk2a5l5bpjpm4oersw4r2aun4.us-east-2.es.amazonaws.com/_plugin/kibana/
+
 # Source Files' Description
 ## Config
   1. ElasticsearchConfig: Contains the configuration information for elasticsearch services hosted on AWS
@@ -18,4 +24,7 @@ This application serves as the solution for Personal Capital AWS Challenge. Belo
   
 # S3 Bucket - arn:aws:s3:::personalcapitalsourcefiles
 This Bucket consists of the input file, and Index mapping for elastic search.
+1. indexdef.txt: consists of index mapping for elasticsearch to store the plan information
+2. Post_API_Plan_creation.txt: example plan to test indexing
+3. f_5500_2017_latest.csv: input file to test the application given by the Personal Capital
 
